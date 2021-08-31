@@ -40,7 +40,11 @@ Verify the user exists. If the user is valid (both by username and verified pass
             "country": "USA",
             "tier": "FREE",
             "birthdate": 3888367646646,
-            "telephone": "555-555-5555"
+            "telephone": "555-555-5555",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
         }
 
 - Response 401 (application/json)
@@ -49,7 +53,11 @@ Verify the user exists. If the user is valid (both by username and verified pass
             "status": "failure",
             "reason": "ACCESS_DENIED",
             "code": 401,
-            "description": "Request lacks valid authentication credentials for the resource."
+            "description": "Request lacks valid authentication credentials for the resource.",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
         }
 
 - Response 403 (application/json)
@@ -58,7 +66,11 @@ Verify the user exists. If the user is valid (both by username and verified pass
             "status": "failure",
             "reason": "USER_PERMISSION_DENIED",
             "code": 403,
-            "description": "Authorization failure"
+            "description": "Authorization failure",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
         }
 
 - Response 404 (application/json)
@@ -67,5 +79,9 @@ Verify the user exists. If the user is valid (both by username and verified pass
             "status": "failure",
             "reason": "USER_NOT_FOUND",
             "code": 404,
-            "description": "User not found"
+            "description": "User not found",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
         }

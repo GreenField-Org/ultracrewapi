@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon src/index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mongoose": "^6.6.1"
+  },
   "devDependencies": {
     "nodemon": "1.18.4"
   },

@@ -29,14 +29,14 @@ http
   password: String,
   middleInitial: String, 
   dob: Date,
-  weight: Int32,
+  weight: Number,
   country: String,
   address: String,
   email: String,
   phoneNum: String,
-  userTier: Int32
+  userTier: Number
 })
-const User = mongoose.model("User", usernameSchema)
+const User = mongoose.model("User", userSchema)
   app.post('/api/user', (req, res) =>{
   //assign body item w username in it to username var
   const username = req.body.username

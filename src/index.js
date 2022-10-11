@@ -75,3 +75,42 @@ const User = mongoose.model("User", userSchema)
     res.json(result)
   })
 })
+
+
+ //creating an aid station
+ const aidStationSchema = new Schema({
+  distancePoint: String,
+  food: String,
+  liquids: String,
+  mood: String,
+  notes: String, 
+  timeOut: Date,
+  timeIn: Date,
+  raceID: ObjectId,
+})
+const AidStation = mongoose.model("AidStation", aidStationSchema)
+  app.post('/api/aidstation', (req, res) =>{
+  //assign item to what's in the body
+  const distancePoint = req.body.distancePoint
+  const food = req.body.food
+  const liquids = req.body.liquids
+  const mood = req.body.mood
+  const notes = req.body.notes
+  const timeOut = req.body.timeOut
+  const timeIn = req.body.timeIn
+  const raceID = req.body.raceID
+
+  AidStation.create({
+    distancePoint: distancePoint,
+    food: food,
+    liquids: liquids,
+    mood: mood, 
+    notes: notes,
+    timeOut: timeOut,
+    timeIn: timeIn,
+    raceID: raceID,
+  }).then(result => {
+    id = result._id
+    res.json(result)
+  })
+})

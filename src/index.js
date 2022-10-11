@@ -85,12 +85,12 @@ const User = mongoose.model("User", userSchema)
   mood: String,
   notes: String, 
   timeOut: Date,
-  timeIn: Number,
+  timeIn: Date,
   raceID: ObjectId,
 })
 const AidStation = mongoose.model("AidStation", aidStationSchema)
   app.post('/api/aidstation', (req, res) =>{
-  //assign body item w username in it to username var
+  //assign item to what's in the body
   const distancePoint = req.body.distancePoint
   const food = req.body.food
   const liquids = req.body.liquids

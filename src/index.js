@@ -1,5 +1,7 @@
 const express = require('express')
+const helmet = require('helmet')
 const app = express()
+app.use(helmet())
 var http = require("http");
 const mongoose = require('mongoose');
 const port = process.env.PORT || 5000;
@@ -86,7 +88,7 @@ const User = mongoose.model("User", userSchema)
   notes: String, 
   timeOut: Date,
   timeIn: Date,
-  raceID: ObjectId,
+  raceID: String,
 })
 const AidStation = mongoose.model("AidStation", aidStationSchema)
   app.post('/api/aidstation', (req, res) =>{

@@ -1,27 +1,32 @@
-const express = require('express')
-const app = express()
-var http = require("http");
-const mongoose = require('mongoose');
-const port = process.env.PORT || 5000;
+var express = require('express')
+var bodyParser = require('body-parser')
+var http = require("http")
+var mongoose = require('mongoose')
 
+var app = express()
+var port = process.env.PORT || 5000
+var jsonParser = bodyParser.json()
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //connect to mongo
-mongoose.connect('mongodb+srv://greenfielddev:Sh3rl0ck@cluster0.zlfjykj.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://greenfielddev:Sh3rl0ck@cluster0.zlfjykj.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
 
 //test to see if server is running
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => console.log(`Listening on port ${port}`))
 
 //create a server object:
 http
   .createServer(function(req, res) {
-    res.write("Hello World!"); //write a response to the client
-    res.end(); //end the response
+    res.write("Hello World!") //write a response to the client
+    res.end() //end the response
   })
-  .listen(8080); //the server object listens on port 8080
+  .listen(8080) //the server object listens on port 8080
 
 
  //creating a user
  const Schema = mongoose.Schema
+
  const userSchema = new Schema({
   username: String,
   firstName: String,
@@ -35,45 +40,33 @@ http
   email: String,
   phoneNum: String,
   userTier: Number
-})
+}, {timestamps: true})
+
 const User = mongoose.model("User", userSchema)
-  app.post('/api/user', (req, res) =>{
+
+app.get('/api/user/:id', urlencodedParser, (req, res) => {
+  const user = User.findById(req.params.id).exec()
+  if (JSON.stringify(user) === '{}') {
+    res.send({status: 404, message: 'NO USER FOUND'})
+  } else {
+    res.send({ user: user, status: 200})
+  }
+});
+
+app.post('/api/user', jsonParser, (req, res) => {
   //assign body item w username in it to username var
-  const username = req.body.username
-  const firstName = req.body.firstName
-  const lastName = req.body.lastName
-  const password = req.body.password
-  const middleInitial = req.body.middleInitial
-  const dob = req.body.dob
-  const weight = req.body.weight
-  const country = req.body.country
-  const address = req.body.address
-  const email = req.body.email
-  const phoneNum = req.body.phoneNum
-  const userTier = req.body.userTier
- //check if username is empty
- if (username === ''){
-   res.json('Username required')
- }else
- //create new username obj in the Users collection
- // the var id turns into the _id from the result of the created username
-  User.create({
-    username: username,
-    firstName: firstName,
-    lastName: lastName,
-    middleInitial: middleInitial, 
-    password: password,
-    dob: dob,
-    weight: weight,
-    country: country,
-    address: address,
-    email: email,
-    phoneNum: phoneNum,
-    userTier: userTier
-  }).then(result => {
-    id = result._id
-    res.json(result)
-  })
+  const user = res.body
+  //check if username is empty
+  if (username === '') {
+    res.json('Username required')
+  } else {
+    //create new username obj in the Users collection
+    // the var id turns into the _id from the result of the created username
+    User.create(user).then(result => {
+      id = result._id
+      res.json(result)
+    })
+  }
 })
 
 
@@ -86,7 +79,7 @@ const User = mongoose.model("User", userSchema)
   notes: String, 
   timeOut: Date,
   timeIn: Date,
-  raceID: ObjectId,
+  raceID: String,
 })
 const AidStation = mongoose.model("AidStation", aidStationSchema)
   app.post('/api/aidstation', (req, res) =>{

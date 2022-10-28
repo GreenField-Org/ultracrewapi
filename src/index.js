@@ -45,7 +45,6 @@ http
 const User = mongoose.model("User", userSchema)
 
 app.get('/api/user/:id', urlencodedParser, (req, res) => {
-  console.log(req.params.id)
   const user = User.findById(req.params.id).exec()
   if (Object.keys(user).length === 0) {
     res.sendStatus(404)

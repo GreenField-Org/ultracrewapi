@@ -55,7 +55,21 @@ app.get('/api/user/:id', urlencodedParser, (req, res) => {
 });
 
 app.post('/api/user', jsonParser, (req, res) => {
-  const user = req.body
+    const user = {
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      middleInitial: req.body.middleInitial,
+      password: req.body.password,
+      dob: req.body.dob,
+      weight: req.body.weight,
+      country: req.body.country,
+      address: req.body.address,
+      email: req.body.email,
+      phoneNum: req.body.phoneNum,
+      userTier: req.body.userTier
+    }
+
   //check if username is empty
   if (username === '') {
     res.status(500).json('Username required')

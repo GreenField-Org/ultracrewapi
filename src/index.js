@@ -10,7 +10,7 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //connect to mongo
-mongoose.connect('mongodb+srv://greenfielddev:Sh3rl0ck@cluster0.zlfjykj.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://greenfielddev:Sh3rl0ck@cluster0.zlfjykj.mongodb.net?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
 
 //test to see if server is running
 app.listen(port, () => console.log(`Listening on port ${port}`))
@@ -45,26 +45,26 @@ http
 const User = mongoose.model("User", userSchema)
 
 app.get('/api/user/:id', urlencodedParser, (req, res) => {
+  console.log(req.params.id)
   const user = User.findById(req.params.id).exec()
-  if (JSON.stringify(user) === '{}') {
-    res.send({status: 404, message: 'NO USER FOUND'})
+  if (Object.keys(user).length === 0) {
+    res.sendStatus(404)
   } else {
-    res.send({ user: user, status: 200})
+    res.status(200).json({ user: user, status: 200})
   }
 });
 
 app.post('/api/user', jsonParser, (req, res) => {
-  //assign body item w username in it to username var
-  const user = res.body
+  const user = req.body
   //check if username is empty
   if (username === '') {
-    res.json('Username required')
+    res.status(500).json('Username required')
   } else {
     //create new username obj in the Users collection
     // the var id turns into the _id from the result of the created username
     User.create(user).then(result => {
       id = result._id
-      res.json(result)
+      res.status(200).json(result)
     })
   }
 })

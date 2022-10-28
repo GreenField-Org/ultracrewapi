@@ -46,12 +46,13 @@ http
 const User = mongoose.model("User", userSchema)
 
 app.get('/api/user/:id', urlencodedParser, (req, res) => {
-  const user = User.findById(req.params.id).exec()
-  if (Object.keys(user).length === 0) {
-    res.sendStatus(404)
-  } else {
-    res.status(200).json({ user: user, status: 200})
-  }
+  User.findById(req.params.id, (err, docs) => {
+    if (err) {
+      res.sendStatus(404)
+    } else {
+      res.status(200).json({ user: docs, status: 200})
+    }
+  })
 });
 
 app.post('/api/user', jsonParser, (req, res) => {
@@ -71,15 +72,20 @@ app.post('/api/user', jsonParser, (req, res) => {
     }
 
   //check if username is empty
-  if (username === '') {
+  if (user.username === '') {
     res.status(500).json('Username required')
   } else {
     //create new username obj in the Users collection
     // the var id turns into the _id from the result of the created username
-    User.create(user).then(result => {
-      id = result._id
-      res.status(200).json(result)
-    })
+    if (User.find({username: req.body.username}).count() > 0) {
+      res.status(500).json({message: 'EXISTING_USER'})
+    } else {
+      User.create(user).then(result => {
+        id = result._id
+        res.status(200).json(result)
+      })
+    }
+  
   }
 })
 

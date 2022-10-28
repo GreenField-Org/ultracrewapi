@@ -1,7 +1,8 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var http = require("http")
-var mongoose = require('mongoose')
+let express = require('express')
+let bodyParser = require('body-parser')
+let http = require("http")
+let mongoose = require('mongoose')
+let dotenv = require('dotenv').config()
 
 var app = express()
 var port = process.env.PORT || 5000
@@ -10,7 +11,7 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //connect to mongo
-mongoose.connect('mongodb+srv://greenfielddev:Sh3rl0ck@cluster0.zlfjykj.mongodb.net?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 //test to see if server is running
 app.listen(port, () => console.log(`Listening on port ${port}`))

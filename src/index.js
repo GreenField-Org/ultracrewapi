@@ -1,10 +1,13 @@
-let express = require('express')
-let bodyParser = require('body-parser')
-let http = require("http")
-let mongoose = require('mongoose')
 let dotenv = require('dotenv').config()
+const express = require('express')
+const helmet = require('helmet')
+const app = express()
+app.use(helmet())
+const http = require("http");
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose');
+const port = process.env.PORT || 5000;
 
-var app = express()
 var port = process.env.PORT || 5000
 var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser

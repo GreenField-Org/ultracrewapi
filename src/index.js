@@ -142,6 +142,16 @@ app.post('/api/race', jsonParser, (req, res) => {
   })
 })
 
+app.get('/api/race/:id', urlencodedParser, (req, res) => {
+  Race.findById(req.params.id, (err, docs) => {
+    if (err) {
+      res.sendStatus(404)
+    } else {
+      res.status(200).json({ user: docs, status: 200})
+    }
+  })
+})
+
  //creating an aid station
  const aidStationSchema = new Schema({
   distancePoint: String,

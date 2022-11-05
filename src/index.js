@@ -107,6 +107,40 @@ app.post('/api/user', jsonParser, (req, res) => {
   }
 })
 
+//race 
+const raceSchema = new Schema({
+  name: String,
+  date: Date,
+  distance: String,
+  duration: String,
+  location: String,
+  userId: String,
+  goal: String,
+  timeGoal: String,
+  active: Boolean,
+}, {timestamps: true})
+
+const Race = mongoose.model("Race", raceSchema)
+
+app.post('/api/race', jsonParser, (req, res) => {
+  const race = {
+    name: req.body.name,
+    date: req.body.date,
+    distance: req.body.distance,
+    duration: req.body.duration,
+    location: req.body.location,
+    userId: req.body.userId,
+    goal: req.body.goal,
+    timeGoal: req.body.timeGoal,
+    active: req.body.active,
+  }
+
+  //it is assumed for now we do not care if there are duplicate races
+  Race.create(race).then(result => {
+    id = result._id
+    res.json(result)
+  })
+})
 
  //creating an aid station
  const aidStationSchema = new Schema({
@@ -118,9 +152,11 @@ app.post('/api/user', jsonParser, (req, res) => {
   timeOut: Date,
   timeIn: Date,
   raceID: String,
-})
+}, {timestamps: true})
+
 const AidStation = mongoose.model("AidStation", aidStationSchema)
-  app.post('/api/aidstation', (req, res) =>{
+  
+app.post('/api/aidstation', (req, res) =>{
   //assign item to what's in the body
   const distancePoint = req.body.distancePoint
   const food = req.body.food

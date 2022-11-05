@@ -142,6 +142,13 @@ app.post('/api/race', jsonParser, (req, res) => {
   })
 })
 
+app.get('/api/races', urlencodedParser, (req, res) => {
+  const userId = req.query.id
+  Race.find({ userId: userId }).then(result => {
+    res.json(result)
+  })
+})
+
  //creating an aid station
  const aidStationSchema = new Schema({
   distancePoint: String,

@@ -144,9 +144,17 @@ app.post('/api/race', jsonParser, (req, res) => {
 
 app.get('/api/races', urlencodedParser, (req, res) => {
   const userId = req.query.id
-  Race.find({ userId: userId }).then(result => {
-    res.json(result)
-  })
+  const active = req.query.active
+  if (active) {
+    Race.find({ userId: userId, active: active }).then(result => {
+      res.json(result)
+    })
+  }else {
+    Race.find({ userId: userId }).then(result => {
+      res.json(result)
+    })
+  }
+  
 })
 
  //creating an aid station

@@ -47,6 +47,22 @@ http
 
 const User = mongoose.model("User", userSchema)
 
+app.post('/api/auth', jsonParser, (req, res) => {
+  const validation = {
+    username: req.body.username,
+    password: req.body.password
+  }
+
+  User.find(validation, (err, doc) => {
+    if(err) {
+      res.sendStatus(404)
+    } else {
+      res.status(200).json({user: Object.assign(doc), status: 200})
+    }
+  })
+})
+
+
 app.get('/api/user/:id', urlencodedParser, (req, res) => {
   User.findById(req.params.id, (err, docs) => {
     if (err) {
@@ -55,7 +71,7 @@ app.get('/api/user/:id', urlencodedParser, (req, res) => {
       res.status(200).json({ user: docs, status: 200})
     }
   })
-});
+})
 
 app.post('/api/user', jsonParser, (req, res) => {
     const user = {

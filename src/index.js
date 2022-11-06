@@ -13,7 +13,10 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //connect to mongo
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(
+  process.env.MONGO_URI, 
+  { useNewUrlParser: true, useUnifiedTopology: true }
+)
 
 //test to see if server is running
 app.listen(port, () => console.log(`Listening on port ${port}`))
@@ -25,7 +28,6 @@ http
     res.end() //end the response
   })
   .listen(8080) //the server object listens on port 8080
-
 
  //creating a user
  const Schema = mongoose.Schema
@@ -57,7 +59,7 @@ app.post('/api/auth', jsonParser, (req, res) => {
     if(err) {
       res.sendStatus(404)
     } else {
-      res.status(200).json({user: Object.assign(doc), status: 200})
+      res.status(200).json({ user: Object.assign(doc), code: 200, message: "SUCCESS" })
     }
   })
 })
@@ -68,7 +70,8 @@ app.get('/api/user/:id', urlencodedParser, (req, res) => {
     if (err) {
       res.sendStatus(404)
     } else {
-      res.status(200).json({ user: docs, status: 200})
+      const races = Race.find({ userId: req.params.id })
+      res.status(200).json({ user: { ...docs, races: races }, code: 200, message: "SUCCESS" })
     }
   })
 })
@@ -91,20 +94,51 @@ app.post('/api/user', jsonParser, (req, res) => {
 
   //check if username is empty
   if (user.username === '') {
-    res.status(500).json('Username required')
+    res.status(500).json({ code: 500, message: "USERNAME REQUIRED" })
   } else {
     //create new username obj in the Users collection
     // the var id turns into the _id from the result of the created username
     if (User.find({username: req.body.username}).count() > 0) {
-      res.status(500).json({message: 'EXISTING_USER'})
+      res.status(500).json({ code: 500, message: 'EXISTING_USER' })
     } else {
       User.create(user).then(result => {
         id = result._id
-        res.status(200).json(result)
+        res.status(200).json({ user: Object.assign(result), code: 200, message: "SUCCESS" })
       })
     }
   
   }
+})
+
+app.put('/api/user/:id', urlencodedParser, jsonParser, (req, res) => {
+  User.findOneAndUpdate(
+    { 
+      _id: req.params.id
+    }, 
+    {
+      $set: {
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        middleInitial: req.body.middleInitial,
+        password: req.body.password,
+        dob: req.body.dob,
+        weight: req.body.weight,
+        country: req.body.country,
+        address: req.body.address,
+        email: req.body.email,
+        phoneNum: req.body.phoneNum,
+        userTier: req.body.userTier
+      }
+    },
+    {
+      upsert: true
+    }
+  ).then(result => {
+    res.status(200).json({ user: Object.assign(result), code: 200, message: 'SUCCESSFULLY UPDATED' })
+  }).catch(error => {
+    res.status(500).json({ code: 500, messgae: error })
+  })
 })
 
 //race 
@@ -122,6 +156,16 @@ const raceSchema = new Schema({
 
 const Race = mongoose.model("Race", raceSchema)
 
+app.get('/api/race/:id', urlencodedParser, (req, res) => {
+  Race.findById(req.params.id, (err, docs) => {
+    if (err) {
+      res.sendStatus(404)
+    } else {
+      res.status(200).json({ race: Object.assign(docs), code: 200, message: "SUCCESS" })
+    }
+  })
+})
+
 app.post('/api/race', jsonParser, (req, res) => {
   const race = {
     name: req.body.name,
@@ -138,7 +182,7 @@ app.post('/api/race', jsonParser, (req, res) => {
   //it is assumed for now we do not care if there are duplicate races
   Race.create(race).then(result => {
     id = result._id
-    res.json(result)
+    res.statusCode(200).json({ race: Object.assign(result), code: 200, message: "SUCCESS" })
   })
 })
 
@@ -156,6 +200,16 @@ app.post('/api/race', jsonParser, (req, res) => {
 
 const AidStation = mongoose.model("AidStation", aidStationSchema)
   
+app.get('/api/aidstation/:id', urlencodedParser, (req, res) => {
+  AidStation.findById(req.params.id, (err, docs) => {
+    if (err) {
+      res.sendStatus(404)
+    } else {
+      res.status(200).json({ aidStation: Object.assign(docs), code: 200, message: "SUCCESS" })
+    }
+  })
+})
+
 app.post('/api/aidstation', (req, res) =>{
   //assign item to what's in the body
   const distancePoint = req.body.distancePoint
@@ -178,6 +232,6 @@ app.post('/api/aidstation', (req, res) =>{
     raceID: raceID,
   }).then(result => {
     id = result._id
-    res.json(result)
+    res.statusCode(200).json({ aidStation: Object.assign(result), code: 200, message: "SUCCESS" })
   })
 })

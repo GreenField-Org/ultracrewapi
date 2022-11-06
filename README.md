@@ -3,6 +3,8 @@
 ## Local Setup 
 - clone repo
 - run ```npm ci```
+- set up a ```.env``` file with a ```MONGODB_URI``` with a variable for your db
+- run ```npm run dev```
 
 # Group Users
 

@@ -1,5 +1,8 @@
 # ultracrewapi
 
+## Local Setup 
+- clone repo
+- run ```npm ci```
 
 # Group Users
 
@@ -80,6 +83,121 @@ Verify the user exists. If the user is valid (both by username and verified pass
             "reason": "USER_NOT_FOUND",
             "code": 404,
             "description": "User not found",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
+        }
+
+# Group Races
+
+API endpoint to access race information. 
+### Create a Race [POST]
+
+- Request
+
+  - Headers
+
+            Accept: application/json,
+            Authorization: HMAC consumerKey: [signature],
+            Date: 6464736744
+
+  - Body
+
+            {
+                "name": "",
+                "date": "",
+                "distance": "",
+                "location": "",
+                "userId": "",
+                "goal": "",
+                "timeGoal": "",
+                "active": true
+            }
+
+- Response 200 (application/json)
+
+        {
+            "name": "Hardrock",
+            "id": 3984938948,
+            "date": "",
+            "distance": "",
+            "location": "",
+            "userId": "",
+            "goal": "",
+            "timeGoal": "",
+            "active": true
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
+        }
+
+- Response 404 (application/json)
+
+        {
+            "status": "failure",
+            "reason": "RACE_NOT_FOUND",
+            "code": 404,
+            "description": "Race not found",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
+        }
+
+# Group Aid Stations
+
+API endpoint to access race information. 
+### Create an Aid Station [POST]
+
+- Request
+
+  - Headers
+
+            Accept: application/json,
+            Authorization: HMAC consumerKey: [signature],
+            Date: 6464736744
+
+  - Body
+
+            {
+                distancePoint: "",
+                food: "",
+                liquids: "",
+                mood: ",
+                notes: "", 
+                timeOut: "",
+                timeIn: "",
+                raceID: "",
+            }
+
+- Response 200 (application/json)
+
+        {
+            "name": "Hardrock",
+            "id": 3984938948,
+            distancePoint: "",
+            food: "",
+            liquids: "",
+            mood: ",
+            notes: "", 
+            timeOut: "",
+            timeIn: "",
+            raceID: "",
+            "_links": {
+                "base": "/users",
+                "self": "/users/auth"
+            }
+        }
+
+- Response 404 (application/json)
+
+        {
+            "status": "failure",
+            "reason": "RACE_NOT_FOUND",
+            "code": 404,
+            "description": "Race not found",
             "_links": {
                 "base": "/users",
                 "self": "/users/auth"

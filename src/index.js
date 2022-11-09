@@ -186,6 +186,20 @@ app.post('/api/race', jsonParser, (req, res) => {
   })
 })
 
+app.get('/api/races', urlencodedParser, (req, res) => {
+  const userId = req.query.id
+  const active = req.query.active
+  if (active) {
+    Race.find({ userId: userId, active: active }).then(result => {
+      res.json(result)
+    })
+  }else {
+    Race.find({ userId: userId }).then(result => {
+      res.json(result)
+    })
+  }
+})
+
 app.get('/api/race/:id', urlencodedParser, (req, res) => {
   const active = req.query.active
   if(active != undefined) {

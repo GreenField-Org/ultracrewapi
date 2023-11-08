@@ -146,8 +146,8 @@ API endpoint to access race information.
               "timeGoal": "",
               "active": true
               "_links": {
-                  "base": "/users",
-                  "self": "/users/auth"
+                  "base": "/race",
+                  "self": "/race/:id"
               }
           }
 
@@ -189,8 +189,8 @@ API endpoint to access race information.
               "timeGoal": "",
               "active": true
               "_links": {
-                  "base": "/users",
-                  "self": "/users/auth"
+                  "base": "/race",
+                  "self": "/race/"
               }
           }
 
@@ -202,8 +202,8 @@ API endpoint to access race information.
               "code": 404,
               "description": "Race not found",
               "_links": {
-                  "base": "/users",
-                  "self": "/users/auth"
+                  "base": "/race",
+                  "self": "/race"
               }
           }
 
@@ -258,8 +258,8 @@ API endpoint to access race information.
               timeIn: "",
               raceID: "",
               "_links": {
-                  "base": "/users",
-                  "self": "/users/auth"
+                  "base": "/aidstation",
+                  "self": "/aidstation"
               }
           }
 
@@ -271,7 +271,7 @@ API endpoint to access race information.
               "code": 404,
               "description": "Race not found",
               "_links": {
-                  "base": "/users",
-                  "self": "/users/auth"
+                  "base": "/aidstation",
+                  "self": "/aidstation"
               }
           }

@@ -7,6 +7,11 @@
 -   set up a `.env` file with a `MONGODB_URI` with a variable for your db
 -   run `npm run dev`
 
+## Data 
+
+![image](https://github.com/user-attachments/assets/8bbceacd-6049-40a5-9ccf-96b42a949b34)
+
+
 # Group Users
 
 API endpoint to access user information.
